@@ -109,8 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cf4393413eec4a459e0d8771a92bce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionChunkPrefab: {fileID: 9096549856499263481, guid: 0c38c5a13f6cc8f4a99df562de4d8728,
+  _explosionChunkPrefab: {fileID: 9096549856499263486, guid: 0c38c5a13f6cc8f4a99df562de4d8728,
     type: 3}
+  _intensity: 250
+  _amountOfChunks: 12
 --- !u!82 &1447349613
 AudioSource:
   m_ObjectHideFlags: 0

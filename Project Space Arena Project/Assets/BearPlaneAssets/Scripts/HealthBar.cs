@@ -7,7 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     public static HealthBar Instance;
 
-    [SerializeField] private Image _healthBar;
+    [SerializeField] private Image _healthBarFill;
 
     private void Awake()
     {
@@ -16,6 +16,6 @@ public class HealthBar : MonoBehaviour
 
     public void UpdateHealthBar(float amountOfHealth)
     {
-        _healthBar.fillAmount = amountOfHealth;
+        _healthBarFill.fillAmount = amountOfHealth;
     }
 }

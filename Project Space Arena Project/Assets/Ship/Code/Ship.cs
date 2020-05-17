@@ -10,17 +10,52 @@ public abstract class Ship : MonoBehaviour
     public float projectileSpeed;
     public float fireRate;
     public float friction;
+    [HideInInspector] public int currentArmor;
 
+    [SerializeField] private Projectile _projectilePrefab;
+    [SerializeField] private GameObject _explosionPrefab;
+    [SerializeField] private Pilot _pilotPrefab;
+    [SerializeField] private AudioSource _projectileAudioSource;
+    [SerializeField] private AudioSource _hitAudioSource;
     public GameObject thrustParticlePrefab;
     public Transform particleSpawnPoint;
-    public Transform particleParent;
-
     [HideInInspector] public Rigidbody2D rigidBody2D;
-    [HideInInspector] public Vector3 heading;
+    [HideInInspector] public bool canShoot;
+    [HideInInspector] public bool canTakeDamage;
 
-    public void Start()
+    public void Awake()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+        currentArmor = maxArmor;
+        canShoot = true;
+        canTakeDamage = true;
+    }
+
+    void FixedUpdate()
+    {
+        if (rigidBody2D.velocity.magnitude > maxSpeed)
+        {
+            rigidBody2D.velocity = rigidBody2D.velocity.normalized * maxSpeed;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Ship>() && canTakeDamage)
+        {
+            Splode();
+        }
+
+        if (collision.GetComponent<Pilot>())
+        {
+            Pilot collidingPilot = collision.GetComponent<Pilot>();
+            collidingPilot.Splode();
+        }
+    }
+
+    public void Thrust()
+    {
+        MoveInDirection(transform.up);
     }
 
     public void MoveInDirection(Vector2 direction)
@@ -29,16 +64,66 @@ public abstract class Ship : MonoBehaviour
         CreateThrustParticles();
     }
 
-    public void MoveToPosition(Vector3 newHeading)
+    public void MoveToPosition(Vector3 positionToMoveTo)
     {
-        Vector3 direction = (newHeading).normalized;
-        Vector2 DirectionToMove = new Vector2(direction.x, direction.y);
-        Vector2 DirectionToMoveNormalized = DirectionToMove.normalized;
-        MoveInDirection(DirectionToMoveNormalized);
+        Vector3 heading = positionToMoveTo - transform.position;
+        Vector3 direction = (heading).normalized;
+        MoveInDirection(direction);
+    }
+
+    public void FireProjectile()
+    {
+        Projectile projectile = Instantiate(_projectilePrefab, transform.position, transform.rotation);
+        projectile.Init(this.gameObject);
+        projectile.rigidbody2D.AddForce(transform.up * projectileSpeed);
+        _projectileAudioSource.Play();
+        StartCoroutine(fireRateBuffer());
     }
 
     public void CreateThrustParticles()
     {
-        GameObject thrustParticle = Instantiate(thrustParticlePrefab, particleSpawnPoint.position, transform.rotation, particleParent);
+        GameObject thrustParticle = Instantiate(thrustParticlePrefab, particleSpawnPoint.position, transform.rotation);
+    }
+
+    public void Splode()
+    {
+        currentArmor = 0;
+        LaunchPilot();
+        Instantiate(_explosionPrefab, this.transform.position, this.transform.rotation);
+        Destroy(gameObject);
+        HandleDamageTaken();
+        HandleDeath();
+    }
+
+    public abstract void HandleDeath();
+
+    public void ApplyDamage(int damageTaken)
+    {
+        currentArmor = currentArmor - damageTaken;
+
+        if (currentArmor > 0)
+        {
+            _hitAudioSource.Play();
+        }
+        else
+        {
+            Splode();
+        }
+
+        HandleDamageTaken();
+    }
+
+    public abstract void HandleDamageTaken();
+
+    void LaunchPilot()
+    {
+        Pilot pilot = Instantiate(_pilotPrefab, transform.position, transform.rotation);
+    }
+
+    IEnumerator fireRateBuffer()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(fireRate);
+        canShoot = true;
     }
 }

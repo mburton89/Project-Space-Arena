@@ -5,26 +5,26 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     public Rigidbody2D rigidbody2D;
-    private GameObject _firer;
+    [HideInInspector] public GameObject firer;
     public int damageToGive;
 
     public void Init(GameObject firer)
     {
-        this._firer = firer;
+        this.firer = firer;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" && collision.gameObject != _firer)
+        if (collision.GetComponent<Ship>() && collision.gameObject != firer)
         {
-            collision.GetComponent<Plane>().HandleHit(damageToGive);
+            collision.GetComponent<Ship>().ApplyDamage(damageToGive);
             Destroy(gameObject);
         }
 
-        if (collision.tag == "Player" && collision.gameObject != _firer && !GetComponent<FlungPilot>())
+        if (collision.GetComponent<Pilot>())
         {
-            collision.GetComponent<BearPlaneStateManager>().HandleHit(damageToGive);
-            Destroy(gameObject);
+            Pilot collidingPilot = collision.GetComponent<Pilot>();
+            collidingPilot.Splode();
         }
     }
 

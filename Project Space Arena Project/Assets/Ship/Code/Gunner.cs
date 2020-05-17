@@ -13,7 +13,7 @@ public class Gunner : EnemyShip
     // Update is called once per frame
     void Update()
     {
-        heading = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position; //TODO Follow player
-        MoveToPosition(heading);
+        //heading = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position; //TODO Follow player
+        //MoveToPosition(heading);
     }
 }

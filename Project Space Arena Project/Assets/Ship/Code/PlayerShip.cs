@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class PlayerShip : Ship
 {
+    private Vector2 _phoneMiddle;
+
     private void Update()
     {
 #if UNITY_EDITOR
-        FaceMouse();
+        HandleMouseInput();
+#endif
+    }
+
+    void HandleMouseInput()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 directionFacing = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
+        transform.up = directionFacing; //Faces Mouse
 
         if (Input.GetMouseButton(1))
         {
-            MoveInDirection(transform.up);
+            Thrust();
             rigidBody2D.drag = 0;
         }
         else
@@ -23,26 +33,33 @@ public class PlayerShip : Ship
         {
             FireProjectile();
         }
-#endif
     }
 
-    void FixedUpdate()
+    void HandlePhoneInput()
     {
-        if (rigidBody2D.velocity.magnitude > maxSpeed)
-        {
-            rigidBody2D.velocity = rigidBody2D.velocity.normalized * maxSpeed;
-        }
+        Vector2 direction = new Vector2(Input.acceleration.x, Input.acceleration.y);
+        Vector2 directionRelativeToPhoneMiddle = direction - _phoneMiddle;
+        transform.up = directionRelativeToPhoneMiddle;
     }
 
-    void FireProjectile()
+    public void HandlePhoneInput(Vector2 initialTouchPosition, Vector2 currentTouchPosition)
     {
-        print("PEW PEW!");
+        Vector2 directionRelativeToPhoneMiddle = currentTouchPosition - initialTouchPosition;
+        transform.up = directionRelativeToPhoneMiddle;
     }
 
-    void FaceMouse()
+    public void CalibrateMiddle()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
-        transform.up = direction;
+        _phoneMiddle = new Vector2(Input.acceleration.x, Input.acceleration.y);
+    }
+
+    public override void HandleDamageTaken()
+    {
+        HealthBar.Instance.UpdateHealthBar((float)currentArmor / (float)maxArmor);
+    }
+
+    public override void HandleDeath()
+    {
+        SceneController.Instance.RestartScene();
     }
 }

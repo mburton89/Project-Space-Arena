@@ -9,15 +9,14 @@ public class ExplosionChunk : MonoBehaviour
     float _x;
     float _y;
 
-    [SerializeField] private int _intensity;
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private GameObject _explosionParticlePrefab;
 
-    void Start()
+    public void Init(int intensity)
     {
         _x = Random.Range(-1.0f, 1.0f);
         _y = Random.Range(-1.0f, 1.0f);
-        speed = Random.Range(_intensity , _intensity * 2);
+        speed = Random.Range(intensity , intensity * 2);
         duration = Random.Range(0.3f, 1.0f);
         Destroy(gameObject, duration);
         _rigidbody2D.AddForce(new Vector2(_x, _y) * speed);

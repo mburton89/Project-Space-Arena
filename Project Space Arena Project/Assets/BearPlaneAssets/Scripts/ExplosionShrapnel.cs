@@ -15,15 +15,15 @@ public class ExplosionShrapnel : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
-        {
-            collision.GetComponent<Plane>().HandleHit(_damageToGive);
-        }
+        //if (collision.tag == "Enemy")
+        //{
+        //    collision.GetComponent<Plane>().HandleHit(_damageToGive);
+        //}
 
-        if (collision.tag == "Player" && collision.gameObject)
-        {
-            collision.GetComponent<BearPlaneStateManager>().HandleHit(_damageToGive);
-        }
+        //if (collision.tag == "Player" && collision.gameObject)
+        //{
+        //    collision.GetComponent<BearPlaneStateManager>().HandleHit(_damageToGive);
+        //}
     }
 
     IEnumerator Exist()

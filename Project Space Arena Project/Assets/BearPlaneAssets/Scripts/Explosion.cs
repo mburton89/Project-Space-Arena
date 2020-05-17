@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] private GameObject _explosionChunkPrefab;
+    [SerializeField] private ExplosionChunk _explosionChunkPrefab;
+    [SerializeField] private int _intensity;
+    [SerializeField] private int _amountOfChunks;
     private AudioSource _audioSource;
+    
 
     public void Splode()
     {
         ScreenShaker.Instance.ShakeScreen();
         _audioSource.Play();
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < _amountOfChunks; i++)
         {
-            Instantiate(_explosionChunkPrefab, this.transform.position, this.transform.rotation, this.transform);
+            ExplosionChunk explosionChunk = Instantiate(_explosionChunkPrefab, transform.position, transform.rotation, transform);
+            explosionChunk.Init(_intensity);
         }
 
         Destroy(gameObject, 1.5f);
