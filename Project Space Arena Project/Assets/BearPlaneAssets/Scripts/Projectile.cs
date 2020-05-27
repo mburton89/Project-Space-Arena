@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     public Rigidbody2D rigidbody2D;
-    [HideInInspector] public GameObject firer;
     public int damageToGive;
+    [HideInInspector] public GameObject firer;
 
     public void Init(GameObject firer)
     {

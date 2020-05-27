@@ -81,6 +81,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -92,6 +93,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -149,13 +151,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 12
-  maxSpeed: 4
+  maxSpeed: 3.5
   maxArmor: 3
   projectileSpeed: 0
   fireRate: 0
   friction: 0
   currentArmor: 0
-  _shipCollider: {fileID: 0}
   _projectilePrefab: {fileID: 0}
   _explosionPrefab: {fileID: 727728369487827449, guid: 09ee3946391a62b4e960391147062965,
     type: 3}
@@ -168,6 +169,7 @@ MonoBehaviour:
   particleSpawnPoint: {fileID: 4290975945018355621}
   rigidBody2D: {fileID: 0}
   canShoot: 0
+  canTakeDamage: 0
 --- !u!114 &4615033927649220814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e575779d5806642a67064a9ea102b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canFlyTowardsPlayer: 0
 --- !u!58 &7973993983566215074
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9096549856499263484}
   - component: {fileID: 9096549856499263487}
-  - component: {fileID: 9096549856499263486}
   - component: {fileID: 5387610712520427042}
+  - component: {fileID: 372128317932773096}
   m_Layer: 0
   m_Name: ExplosionChunk
   m_TagString: Untagged
@@ -47,6 +47,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -81,22 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9096549856499263486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9096549856499263481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b789b137381d7542921697c0802c4bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _intensity: 200
-  _rigidbody2D: {fileID: 5387610712520427042}
-  _explosionParticlePrefab: {fileID: 4456179391809694112, guid: 478eab921d98970458fb4d460b6e2ffa,
-    type: 3}
 --- !u!50 &5387610712520427042
 Rigidbody2D:
   serializedVersion: 4
@@ -118,3 +104,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &372128317932773096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096549856499263481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07e140734528eee409427d30673ed5f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody2D: {fileID: 5387610712520427042}
+  _explosionParticlePrefab: {fileID: 4456179391809694112, guid: 478eab921d98970458fb4d460b6e2ffa,
+    type: 3}

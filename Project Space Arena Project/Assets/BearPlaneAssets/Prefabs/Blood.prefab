@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3244511722376281553}
   - component: {fileID: 3244511722376281552}
-  - component: {fileID: 3244511722376281555}
   - component: {fileID: 2819177639277437254}
+  - component: {fileID: 6992968761089102392}
   m_Layer: 0
   m_Name: Blood
   m_TagString: Untagged
@@ -47,6 +47,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -81,22 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3244511722376281555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3244511722376281554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf4393413eec4a459e0d8771a92bce3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _explosionChunkPrefab: {fileID: 2211530331038198224, guid: 84ce8253a7163d6459914537d5ba34f0,
-    type: 3}
-  _intensity: 100
-  _amountOfChunks: 10
 --- !u!82 &2819177639277437254
 AudioSource:
   m_ObjectHideFlags: 0
@@ -193,3 +179,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6992968761089102392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244511722376281554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15810789477ba394389bcf9d67327647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _explosionChunkPrefab: {fileID: 7826933399612435754, guid: 84ce8253a7163d6459914537d5ba34f0,
+    type: 3}
+  _intensity: 100
+  _amountOfChunks: 10

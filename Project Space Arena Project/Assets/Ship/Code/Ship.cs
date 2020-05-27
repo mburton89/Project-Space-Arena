@@ -15,6 +15,8 @@ public abstract class Ship : MonoBehaviour
     [SerializeField] private Projectile _projectilePrefab;
     [SerializeField] private GameObject _explosionPrefab;
     [SerializeField] private Pilot _pilotPrefab;
+    [SerializeField] private ThrustParticle _fireParticlePrefab;
+    [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private AudioSource _projectileAudioSource;
     [SerializeField] private AudioSource _hitAudioSource;
     public GameObject thrustParticlePrefab;
@@ -56,12 +58,12 @@ public abstract class Ship : MonoBehaviour
     public void Thrust()
     {
         MoveInDirection(transform.up);
+        CreateThrustParticles();
     }
 
     public void MoveInDirection(Vector2 direction)
     {
         rigidBody2D.AddForce(direction * acceleration);
-        CreateThrustParticles();
     }
 
     public void MoveToPosition(Vector3 positionToMoveTo)
@@ -73,16 +75,20 @@ public abstract class Ship : MonoBehaviour
 
     public void FireProjectile()
     {
-        Projectile projectile = Instantiate(_projectilePrefab, transform.position, transform.rotation);
+        Projectile projectile = Instantiate(_projectilePrefab, _projectileSpawnPoint.position, transform.rotation);
         projectile.Init(this.gameObject);
         projectile.rigidbody2D.AddForce(transform.up * projectileSpeed);
+        Instantiate(_fireParticlePrefab, _projectileSpawnPoint.position, transform.rotation);
         _projectileAudioSource.Play();
         StartCoroutine(fireRateBuffer());
     }
 
     public void CreateThrustParticles()
     {
-        GameObject thrustParticle = Instantiate(thrustParticlePrefab, particleSpawnPoint.position, transform.rotation);
+        float randomX = Random.Range(-0.03f, 0.03f);
+        float randomY = Random.Range(-0.03f, 0.03f);
+        Vector3 spawnPosition = new Vector3(particleSpawnPoint.position.x + randomX, particleSpawnPoint.position.y + randomY);
+        GameObject thrustParticle = Instantiate(thrustParticlePrefab, spawnPosition, transform.rotation);
     }
 
     public void Splode()
