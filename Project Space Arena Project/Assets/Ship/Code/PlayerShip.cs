@@ -9,7 +9,8 @@ public class PlayerShip : Ship
     private void Update()
     {
 #if UNITY_EDITOR
-        HandleMouseInput();
+        //HandleMouseInput();
+        HandleControllerInput();
 #endif
     }
 
@@ -46,6 +47,24 @@ public class PlayerShip : Ship
     {
         Vector2 directionRelativeToPhoneMiddle = currentTouchPosition - initialTouchPosition;
         transform.up = directionRelativeToPhoneMiddle;
+    }
+
+    public void HandleControllerInput()
+    {
+        Vector2 directionFacing = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        transform.up = directionFacing;
+
+        if (Input.GetButtonDown("Attack"))
+        {
+            FireProjectile();
+        }
+
+        float thrustAmount = Input.GetAxis("AttackTrigger");
+        print(thrustAmount);
+        if (thrustAmount > 0)
+        {
+            Thrust(thrustAmount);
+        }
     }
 
     public void CalibrateMiddle()

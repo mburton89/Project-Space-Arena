@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Ship : MonoBehaviour
 {
     public float acceleration;
+    private float _initialMaxSpeed;
     public float maxSpeed;
     public int maxArmor;
     public float projectileSpeed;
@@ -31,13 +32,14 @@ public abstract class Ship : MonoBehaviour
         currentArmor = maxArmor;
         canShoot = true;
         canTakeDamage = true;
+        _initialMaxSpeed = maxSpeed;
     }
 
     void FixedUpdate()
     {
-        if (rigidBody2D.velocity.magnitude > maxSpeed)
+        if (rigidBody2D.velocity.magnitude > (maxSpeed))
         {
-            rigidBody2D.velocity = rigidBody2D.velocity.normalized * maxSpeed;
+            rigidBody2D.velocity = rigidBody2D.velocity.normalized * (maxSpeed);
         }
     }
 
@@ -59,6 +61,13 @@ public abstract class Ship : MonoBehaviour
     {
         MoveInDirection(transform.up);
         CreateThrustParticles();
+    }
+
+    public void Thrust(float amount)
+    {
+        MoveInDirection(transform.up);
+        CreateThrustParticles();
+        maxSpeed = _initialMaxSpeed * amount;
     }
 
     public void MoveInDirection(Vector2 direction)
