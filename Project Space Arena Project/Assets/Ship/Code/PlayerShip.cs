@@ -9,8 +9,8 @@ public class PlayerShip : Ship
     private void Update()
     {
 #if UNITY_EDITOR
-        //HandleMouseInput();
-        HandleControllerInput();
+        HandleMouseInput();
+        //HandleControllerInput();
 #endif
     }
 
