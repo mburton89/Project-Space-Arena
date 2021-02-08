@@ -8,6 +8,8 @@ public abstract class Ship : MonoBehaviour
     private float _initialMaxSpeed;
     public float maxSpeed;
     public int maxArmor;
+    public float secondsBeforeCanTakeDamage;
+    public float secondsBeforeCanThrust;
     public float projectileSpeed;
     public float fireRate;
     public float friction;
@@ -24,6 +26,7 @@ public abstract class Ship : MonoBehaviour
     public Transform particleSpawnPoint;
     [HideInInspector] public Rigidbody2D rigidBody2D;
     [HideInInspector] public bool canShoot;
+    [HideInInspector] public bool canThrust;
     [HideInInspector] public bool canTakeDamage;
 
     public void Awake()
@@ -31,6 +34,7 @@ public abstract class Ship : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         currentArmor = maxArmor;
         canShoot = true;
+        canThrust = true;
         canTakeDamage = true;
         _initialMaxSpeed = maxSpeed;
     }
@@ -43,31 +47,37 @@ public abstract class Ship : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.GetComponent<Ship>() && canTakeDamage)
+        if (collision.gameObject.GetComponent<Ship>())
         {
-            Splode();
+            BounceOffShip(collision.gameObject.GetComponent<Ship>());
         }
 
-        if (collision.GetComponent<Pilot>())
+        if (collision.gameObject.GetComponent<Pilot>())
         {
-            Pilot collidingPilot = collision.GetComponent<Pilot>();
+            Pilot collidingPilot = collision.gameObject.GetComponent<Pilot>();
             collidingPilot.Splode();
         }
     }
 
     public void Thrust()
     {
-        MoveInDirection(transform.up);
-        CreateThrustParticles();
+        if (canThrust)
+        {
+            MoveInDirection(transform.up);
+            CreateThrustParticles();
+        }
     }
 
     public void Thrust(float amount)
     {
-        MoveInDirection(transform.up);
-        CreateThrustParticles();
-        maxSpeed = _initialMaxSpeed * amount;
+        if (canThrust)
+        {
+            MoveInDirection(transform.up);
+            CreateThrustParticles();
+            maxSpeed = _initialMaxSpeed * amount;
+        }
     }
 
     public void MoveInDirection(Vector2 direction)
@@ -114,18 +124,21 @@ public abstract class Ship : MonoBehaviour
 
     public void ApplyDamage(int damageTaken)
     {
-        currentArmor = currentArmor - damageTaken;
-
-        if (currentArmor > 0)
+        if (canTakeDamage)
         {
-            _hitAudioSource.Play();
-        }
-        else
-        {
-            Splode();
-        }
+            currentArmor = currentArmor - damageTaken;
 
-        HandleDamageTaken();
+            if (currentArmor > 0)
+            {
+                _hitAudioSource.Play();
+            }
+            else
+            {
+                Splode();
+            }
+
+            HandleDamageTaken();
+        }
     }
 
     public abstract void HandleDamageTaken();
@@ -140,5 +153,36 @@ public abstract class Ship : MonoBehaviour
         canShoot = false;
         yield return new WaitForSeconds(fireRate);
         canShoot = true;
+    }
+
+    public void BounceOffShip(Ship shipToBounceOffOf)
+    {
+        if (GetComponent<EnemyShip>() && canThrust)
+        {
+            StartCoroutine(ThrustBuffer());
+        }
+
+        Vector2 directionToBounce = (transform.position - shipToBounceOffOf.transform.position);
+        rigidBody2D.AddForce(directionToBounce.normalized * (shipToBounceOffOf.rigidBody2D.velocity.magnitude * 100));
+        ApplyDamage(1);
+
+        if (canTakeDamage)
+        {
+            StartCoroutine(DamageBuffer());
+        }
+    }
+
+    private IEnumerator DamageBuffer()
+    {
+        canTakeDamage = false;
+        yield return new WaitForSeconds(secondsBeforeCanTakeDamage);
+        canTakeDamage = true;
+    }
+
+    private IEnumerator ThrustBuffer()
+    {
+        canThrust = false;
+        yield return new WaitForSeconds(secondsBeforeCanThrust);
+        canThrust = true;
     }
 }

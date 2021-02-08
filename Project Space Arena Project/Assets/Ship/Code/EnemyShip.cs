@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyShip : Ship
 {
+    public int amountOfPointsToGive;
+
     public override void HandleDamageTaken()
     {
         
@@ -15,5 +17,7 @@ public class EnemyShip : Ship
         {
             EnemyShipSpawner.Instance.CheckEnemyCount();
         }
+
+        PointsCounter.Instance.IncreasePoints(amountOfPointsToGive);
     }
 }

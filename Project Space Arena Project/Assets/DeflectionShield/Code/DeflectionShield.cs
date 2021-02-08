@@ -8,7 +8,8 @@ public class DeflectionShield : MonoBehaviour
     {
         if (collision.GetComponent<Projectile>())
         {
-            DeflectProjectile(collision.GetComponent<Projectile>());
+            //DeflectProjectile(collision.GetComponent<Projectile>());
+            DumbDeflectProjectile(collision.GetComponent<Projectile>());
         }
 
         if (collision.GetComponent<EnemyShip>())
@@ -19,26 +20,48 @@ public class DeflectionShield : MonoBehaviour
 
     void DeflectProjectile(Projectile projectile)
     {
+        //find direction between self and projectile
+        Vector2 directionToDeflect = (projectile.transform.position - transform.position);
+
         projectile.firer = null;
         projectile.damageToGive *= 2;
-        Vector2 currentVelocity = projectile.rigidbody2D.velocity;
+        float projectileMagnitude = projectile.rigidbody2D.velocity.magnitude;
         projectile.rigidbody2D.velocity = Vector2.zero;
-        projectile.rigidbody2D.AddForce(-currentVelocity * 2);
+        projectile.transform.up = directionToDeflect;
+
+        projectile.rigidbody2D.AddForce((directionToDeflect.normalized * projectileMagnitude) * 2);
+
+        //find owners velocity
+        Rigidbody2D parentRigidbody = GetComponentInParent<Rigidbody2D>();
+        Vector2 parentVelocity = parentRigidbody.velocity;
+        print("parentVelocity" + parentVelocity);
+        projectile.rigidbody2D.AddForce(parentVelocity * 2);
+    }
+
+    void DumbDeflectProjectile(Projectile projectile)
+    {
+        projectile.firer = null;
+        projectile.damageToGive *= 2;
+        projectile.rigidbody2D.velocity = -projectile.rigidbody2D.velocity;
     }
 
     void DeflectShip(EnemyShip enemyShip)
     {
-        StartCoroutine(DeflectShipCo(enemyShip));
-    }
+        //find owners velocity
+        Rigidbody2D parentRigidbody = GetComponentInParent<Rigidbody2D>();
+        Vector2 parentVelocity = parentRigidbody.velocity;
+        print("parentVelocity" + parentVelocity);
 
-    private IEnumerator DeflectShipCo(EnemyShip enemyShip)
-    {
-        Vector2 currentVelocity = enemyShip.rigidBody2D.velocity;
+        FlyTowardsPlayer flyTowardsPlayer = enemyShip.GetComponent<FlyTowardsPlayer>();
+        flyTowardsPlayer.HandleDefected();
+        Vector2 enemyShipVelocity = enemyShip.rigidBody2D.velocity;
+        print("enemyShipVelocity" + enemyShipVelocity);
+
+        Vector2 netVelocity = parentVelocity - enemyShipVelocity;
+        print("netVelocity" + netVelocity);
+
         enemyShip.rigidBody2D.velocity = Vector2.zero;
-        enemyShip.rigidBody2D.AddForce(-currentVelocity * 1000);
-        enemyShip.GetComponent<FlyTowardsPlayer>().canFlyTowardsPlayer = false;
-        yield return new WaitForSeconds(1);
-        enemyShip.GetComponent<FlyTowardsPlayer>().canFlyTowardsPlayer = true;
+        enemyShip.rigidBody2D.AddForce((enemyShipVelocity) + (parentVelocity), ForceMode2D.Impulse);
     }
 
     public void Activate()

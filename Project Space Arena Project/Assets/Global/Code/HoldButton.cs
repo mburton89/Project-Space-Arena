@@ -1,32 +1,27 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class HoldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public bool buttonPressed;
-    private PlayerShip _playerShip;
+    [HideInInspector] public bool isPressed;
+    public UnityEvent onPointerDown;
+    public UnityEvent onPointerUp;
 
-    void Start()
+    void Awake()
     {
-        _playerShip = FindObjectOfType<PlayerShip>();
+        isPressed = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        buttonPressed = true;
+        isPressed = true;
+        onPointerDown.Invoke();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        buttonPressed = false;
-    }
-
-    void Update()
-    {
-        if (buttonPressed && _playerShip != null)
-        {
-            _playerShip.Thrust();
-        }
+        isPressed = false;
+        onPointerUp.Invoke();
     }
 }

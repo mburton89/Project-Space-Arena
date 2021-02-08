@@ -48,7 +48,6 @@ public class EnemyShipSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         int enemyCount = FindObjectsOfType<EnemyShip>().Length;
-        print("enemyCount: " + enemyCount);
         if (enemyCount <= 0)
         {
             SpawnEnemies();

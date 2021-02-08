@@ -153,6 +153,8 @@ MonoBehaviour:
   acceleration: 12
   maxSpeed: 3.5
   maxArmor: 3
+  secondsBeforeCanTakeDamage: 0
+  secondsBeforeCanThrust: 1
   projectileSpeed: 0
   fireRate: 0
   friction: 0
@@ -162,6 +164,8 @@ MonoBehaviour:
     type: 3}
   _pilotPrefab: {fileID: 2090141300864934216, guid: f341bae9fd54124478620710c4cbe298,
     type: 3}
+  _fireParticlePrefab: {fileID: 0}
+  _projectileSpawnPoint: {fileID: 0}
   _projectileAudioSource: {fileID: 0}
   _hitAudioSource: {fileID: 4615033927970172840}
   thrustParticlePrefab: {fileID: 8727787779096050641, guid: 7427e4a7fd091064fa22cafdf519d7e1,
@@ -169,7 +173,9 @@ MonoBehaviour:
   particleSpawnPoint: {fileID: 4290975945018355621}
   rigidBody2D: {fileID: 0}
   canShoot: 0
+  canThrust: 0
   canTakeDamage: 0
+  amountOfPointsToGive: 1
 --- !u!114 &4615033927649220814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +199,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.03}

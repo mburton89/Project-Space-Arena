@@ -10,7 +10,7 @@ public class PlayerShip : Ship
     {
 #if UNITY_EDITOR
         //HandleMouseInput();
-        HandleControllerInput();
+        //HandleControllerInput();
 #endif
     }
 
@@ -60,7 +60,6 @@ public class PlayerShip : Ship
         }
 
         float thrustAmount = Input.GetAxis("AttackTrigger");
-        print(thrustAmount);
         if (thrustAmount > 0.1f)
         {
             Thrust(thrustAmount);

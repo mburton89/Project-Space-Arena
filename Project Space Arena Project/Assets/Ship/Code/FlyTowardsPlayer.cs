@@ -25,4 +25,16 @@ public class FlyTowardsPlayer : MonoBehaviour
             _ownShip.Thrust();
         }
     }
+
+    public void HandleDefected()
+    {
+        StartCoroutine(HandleDefectedCo());
+    }
+
+    private IEnumerator HandleDefectedCo()
+    {
+        canFlyTowardsPlayer = false;
+        yield return new WaitForSeconds(1);
+        canFlyTowardsPlayer = true;
+    }
 }

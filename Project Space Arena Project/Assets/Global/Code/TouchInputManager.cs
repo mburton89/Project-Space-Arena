@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class TouchInputManager : MonoBehaviour
 {
     private PlayerShip _playerShip;
+    private DeflectionShieldController _deflectionShieldController;
     [SerializeField] private Button _cameraFollowButton;
-    [SerializeField] private Button _fireProjectileButton;
+    [SerializeField] private HoldButton _thrustButton;
+    [SerializeField] private HoldButton _fireProjectileButton;
+    [SerializeField] private HoldButton _deflectShieldButton;
     [SerializeField] private GameObject _touchCircle;
     [SerializeField] private FollowPlayer _cameraFollow;
     private Vector2 _initialTouchPosition;
@@ -16,6 +19,7 @@ public class TouchInputManager : MonoBehaviour
     void Start()
     {
         _playerShip = FindObjectOfType<PlayerShip>();
+        _deflectionShieldController = FindObjectOfType<DeflectionShieldController>();
     }
 
     private void Update()
@@ -44,21 +48,28 @@ public class TouchInputManager : MonoBehaviour
         {
             _touchCircle.SetActive(false);
         }
+
+        if (_thrustButton.isPressed && _playerShip != null)
+        {
+            _playerShip.Thrust();
+        }
     }
 
     private void OnEnable()
     {
-        _fireProjectileButton.onClick.AddListener(FireProjectile);
         _cameraFollowButton.onClick.AddListener(ToggleCameraFollow);
+        _fireProjectileButton.onPointerDown.AddListener(FireProjectile);
+        _deflectShieldButton.onPointerDown.AddListener(DeployDefectShield);
     }
 
     private void OnDisable()
     {
+        _cameraFollowButton.onClick.RemoveListener(ToggleCameraFollow);
         if (_playerShip != null)
         {
-            _fireProjectileButton.onClick.RemoveListener(_playerShip.FireProjectile);
+            _fireProjectileButton.onPointerDown.RemoveListener(_playerShip.FireProjectile);
         }
-        _cameraFollowButton.onClick.RemoveListener(ToggleCameraFollow);
+        _deflectShieldButton.onPointerDown.RemoveListener(DeployDefectShield);
     }
 
     void FireProjectile()
@@ -66,9 +77,12 @@ public class TouchInputManager : MonoBehaviour
         _playerShip.FireProjectile();
     }
 
-    void HandleLeftSidePressed()
+    void DeployDefectShield()
     {
-        _playerShip.Thrust();
+        if (_deflectionShieldController != null)
+        {
+            _deflectionShieldController.Deflect();
+        }
     }
 
     void ToggleCameraFollow()

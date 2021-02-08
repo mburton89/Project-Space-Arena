@@ -41,7 +41,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f95fed34bde5b9f478b2884a2abe21af, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1ed00e84527a06442972d833d0794680, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -378,9 +378,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 8
-  maxSpeed: 2
-  maxArmor: 3
-  projectileSpeed: 30
+  maxSpeed: 1
+  maxArmor: 5
+  secondsBeforeCanTakeDamage: 0
+  secondsBeforeCanThrust: 1
+  projectileSpeed: 15
   fireRate: 2
   friction: 0
   currentArmor: 0
@@ -400,7 +402,9 @@ MonoBehaviour:
   particleSpawnPoint: {fileID: 5921384761275156872}
   rigidBody2D: {fileID: 0}
   canShoot: 0
+  canThrust: 0
   canTakeDamage: 0
+  amountOfPointsToGive: 1
 --- !u!114 &3002637705999777507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +440,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.03}
