@@ -16,7 +16,7 @@ public class PlayerShip : Ship
 
     void HandleMouseInput()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
         Vector2 directionFacing = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
         transform.up = directionFacing; //Faces Mouse
 
